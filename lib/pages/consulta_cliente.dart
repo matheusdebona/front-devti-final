@@ -1,5 +1,7 @@
 import 'package:devti_front_final/api/acesso_api.dart';
+import 'package:devti_front_final/model/cidade.dart';
 import 'package:devti_front_final/model/pessoa.dart';
+import 'package:devti_front_final/util/combo_cidade.dart';
 import 'package:devti_front_final/util/componentes.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +14,8 @@ class ConsultaCliente extends StatefulWidget {
 
 class _ConsultaClienteState extends State<ConsultaCliente> {
   GlobalKey<FormState> formController = GlobalKey<FormState>();
+  GlobalKey<FormState> formControllerSearch = GlobalKey<FormState>();
+  TextEditingController buscaController = TextEditingController();
   List<Pessoa> lista = [];
   @override
   Widget build(BuildContext context) {
@@ -22,6 +26,15 @@ class _ConsultaClienteState extends State<ConsultaCliente> {
     listarTodas() async {
       List<Pessoa> pessoas = await AcessoApi().listaPessoas();
       setState(() {
+        lista = pessoas;
+      });
+    }
+
+    listaPessoasPorCidade() async {
+      List<Pessoa> pessoas =
+          await AcessoApi().listaPessoasPorCidade(buscaController.text);
+      setState(() {
+        lista = [];
         lista = pessoas;
       });
     }
@@ -38,8 +51,12 @@ class _ConsultaClienteState extends State<ConsultaCliente> {
       body: Form(
         key: formController,
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Componentes()
-              .criaBotao(formController, "Listar Clientes", listarTodas),
+          Componentes().criaBotao(formController, "Listar Todos", listarTodas),
+          Form(
+            key: formControllerSearch,
+            child: Componentes().criaInputBusca("", buscaController,
+                formControllerSearch, listaPessoasPorCidade),
+          ),
           Expanded(
               child: Container(
             child: ListView.builder(

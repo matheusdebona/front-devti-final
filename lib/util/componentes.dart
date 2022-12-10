@@ -98,7 +98,7 @@ class Componentes {
 
   criaBotaoEditCid(context, cidade) {
     return ElevatedButton(
-      child: Icon(Icons.edit),
+      child: const Icon(Icons.edit),
       onPressed: () {
         Navigator.push(
           context,
@@ -114,7 +114,7 @@ class Componentes {
 
   criaBotaoEditCli(context, pessoa) {
     return ElevatedButton(
-      child: Icon(Icons.edit),
+      child: const Icon(Icons.edit),
       onPressed: () {
         Navigator.push(
           context,
@@ -169,8 +169,8 @@ class Componentes {
                     child: const Text("Cancelar"),
                   ),
                 ],
-                title: const Text("Você está certo disso?"),
-                content: const Text("Você não poderá reverter esta decisão."),
+                title: const Text("Quer mesmo deletar?"),
+                content: const Text("Você não poderá voltar atrás!"),
               ),
             );
           }
@@ -229,6 +229,30 @@ class Componentes {
     return ListTile(
       title: criaTexto("${cidade.nome} - ${cidade.uf}"),
       trailing: criaBotaoConfig(context, cidade, funcaoDelete),
+    );
+  }
+
+  criaInputBusca(String textoLabel, TextEditingController controlador,
+      formController, funcao) {
+    return ListTile(
+      title: textoLabel == ""
+          ? criaInputTexto(
+              "Buscar por Cidade", controlador, "Deve ser preenchido")
+          : null,
+      trailing: Container(
+        height: 500,
+        child: ElevatedButton(
+          onPressed: () {
+            funcao();
+          },
+          child: Text(
+            "Buscar",
+            style: TextStyle(
+              fontSize: 30,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

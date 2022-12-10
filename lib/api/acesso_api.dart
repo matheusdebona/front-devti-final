@@ -14,6 +14,15 @@ class AcessoApi {
     return pessoas;
   }
 
+  Future<List<Pessoa>> listaPessoasPorCidade(cidade) async {
+    String url = "http://localhost:8080/cliente/${cidade}";
+    Response resposta = await get(Uri.parse(url));
+    String jsonFormatUtf8 = (utf8.decode(resposta.bodyBytes));
+    Iterable l = json.decode(jsonFormatUtf8);
+    List<Pessoa> pessoas = List<Pessoa>.from(l.map((e) => Pessoa.fromJson(e)));
+    return pessoas;
+  }
+
   Future<List<Cidade>> listaCidades() async {
     String url = "http://localhost:8080/cidade";
     Response resposta = await get(Uri.parse(url));
